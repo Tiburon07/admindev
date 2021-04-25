@@ -16,7 +16,6 @@ class Home extends Base
         $this->validate = new Validate();
     }
 
-
     public function index($request, $response){
         return $this->getTwig()->render($response, $this->setView('site/home'), [
             'title' => 'Home',
