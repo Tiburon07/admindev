@@ -1,0 +1,11 @@
+{% extends "site/master.twig" %}
+
+{% block content %}
+    <h2>Create</h2>
+    {{ message['message'] }}
+    <form action="/user/delete" method="post">
+        <input type="hidden"  name="_METHOD" value="DELETE" />
+        <button type="submit">Registra</button>
+    </form>
+
+{% endblock %}
