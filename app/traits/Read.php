@@ -19,7 +19,7 @@ trait Read
         }
     }
 
-    public function findBy($field, $value,$fetchAll = true ){
+    public function findBy($field, $value,$fetchAll = false ){
         try {
 
             $prepare = $this->conn->prepare("SELECT * FROM {$this->table} WHERE {$field} = :{$field} ");
@@ -30,6 +30,7 @@ trait Read
 
         }catch (PDOException $e){
             var_dump($e->getMessage());
+            die();
         }
     }
 

@@ -15,7 +15,7 @@ class Connection
         }
 
         try {
-            static::$pdo = new PDO('mysql:host=localhost;dbname=slim4', 'mysql', 'mysqlpwd', [
+            static::$pdo = new PDO('mysql:host=db4free.net;dbname=admindev','tiburon','yamahaMT07', [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ
             ]);

@@ -17,11 +17,19 @@ class Home extends Base
     }
 
     public function index($request, $response){
+
+        $users = $this->user->find();
+        $message = Flash::get('message');
+
         return $this->getTwig()->render($response, $this->setView('site/home'), [
             'title' => 'Home',
-            'users' => '',
-            'message' => ''
+            'users' => $users,
+            'message' =>  $message
         ]);
+    }
+
+    public function notFound($request, $response){
+        return $this->getTwig()->render($response, $this->setView('site/404'));
     }
 
     public function edit(){

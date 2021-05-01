@@ -2,6 +2,8 @@
 
 namespace app\traits;
 
+use app\classes\TwigFilters;
+use app\classes\TwigGlobal;
 use Slim\Views\Twig;
 use Exception;
 
@@ -9,7 +11,10 @@ trait Template
 {
     public function getTwig(){
         try{
-            return Twig::create(DIR_VIEWS);
+            $twig = Twig::create(DIR_VIEWS);
+            TwigGlobal::load($twig);
+            return $twig;
+
         }catch (Exception $e){
             var_dump($e->getMessage());
         }
