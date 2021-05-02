@@ -1,23 +1,24 @@
 <?php
 
-
 namespace app\traits;
-use PDOException;
+
+use Exception;
 
 trait Delete
 {
     public function delete($field, $value){
+        $result = ['data' => null, 'status' => 0, 'message' => ''];
         try{
-
             $sql = "DELETE FROM {$this->table} where {$field} = :{$field}";
-
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(":{$field}", $value);
-            return $stmt->execute();
+            $result['data'] = $stmt->execute();
 
-        }catch(PDOException $e){
-            var_dump($e->getMessage());
+        }catch (Exception $e){
+            $result['status'] = 1;
+            $result['message'] = $e->getMessage();
         }
+        return $result;
     }
 
 }

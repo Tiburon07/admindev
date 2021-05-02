@@ -15,6 +15,7 @@ const Utility = {
 
   getTableConfig: function() {
     return {
+      "dom": '<"top">rt<"bottom"lp>',
       "searching": true,
       "ordering": true,
       "info": true,
@@ -1170,7 +1171,7 @@ const Utility = {
 
   //utilizza le classi css spinnerdiv e spinner-center di estrazione.css
   showWait: function() {
-    if ($('#spinner').length === 0) $('body').append('<div id="spinner" aria-hidden="true" class="spinnerdiv"><i class="fas fa-circle-notch fa-4x fa-spin spinner-center"></i><span style="position: absolute;left: 55%;top: 53%;">Caricamento in corso...</span></div>');
+    if ($('#spinner').length === 0) $('body').append('<div id="spinner" aria-hidden="true" class="spinnerdiv"><i class="fas fa-circle-notch fa-4x fa-spin spinner-center"></i></div>');
   },
 
   /**
@@ -1180,7 +1181,6 @@ const Utility = {
    */
 
   showModalError: function(msg) {
-    //console.log(msg);
     Utility.showModal({ 'type': Utility.ERROR, 'sMsg': msg, 'modalSize': 'large' });
   },
 
@@ -1392,6 +1392,7 @@ const Utility = {
     let configAjax = {
       url: url,
       type: type,
+      headers: { Authorization: localStorage.getItem("token")},
       data: JSON.stringify(data),
       success: this.onSuccess.bind(this,idSpinner,callback),
       error: this.onError.bind(this,idSpinner)
@@ -1417,10 +1418,10 @@ const Utility = {
 
     try {
       let dataRetParse = JSON.parse(dataRet);
-      if (dataRetParse.status == 0) {
+      if (dataRetParse.statusCode == 200) {
         callback(dataRetParse);
       } else {
-        this.showModalError(dataRetParse.message);
+        this.showModalError(dataRetParse.error.description);
       }
     } catch (error) {
       if(dataRet.indexOf('SESSION_ERROR') > -1){
@@ -1437,7 +1438,7 @@ const Utility = {
    */
   onError : function(idSpinner, xhr, textStatus, errorThrown) {
     this.hideStackSpinner(idSpinner);
-    this.showModalError(errorThrown);
+    this.showModalError(xhr.responseJSON.error.description);
   },
 
   /**

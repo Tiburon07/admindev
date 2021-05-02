@@ -30,6 +30,11 @@
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <script>
+      console.log('{{ token }}');
+      localStorage.setItem('token','{{ token }}')
+
+      let G_baseUrl = 'http://localhost:8000/';
+
       document.addEventListener("DOMContentLoaded", function(event) {
           {% block document_ready %}{% endblock %}
       });
@@ -42,6 +47,7 @@
         {% block content %}{% endblock %}
         {% include "site/partials/control_sidebar.twig" %}
         {% include "site/partials/footer.twig" %}
+        {% include "site/partials/modal_tpl.twig" %}
     </div>
     <!-- jQuery -->
     <script src="{{ASSETS}}/plugins/jquery/jquery.min.js"></script>

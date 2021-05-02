@@ -14,9 +14,8 @@ trait Template
             $twig = Twig::create(DIR_VIEWS);
             TwigGlobal::load($twig);
             return $twig;
-
         }catch (Exception $e){
-            var_dump($e->getMessage());
+            throwException($e);
         }
     }
 

@@ -3,22 +3,24 @@
 
 namespace app\classes;
 
-
-use \app\database\modules\User;
+use \app\modules\UserModel;
 
 class Login
 {
     public function login($email, $password){
-        $user = new User();
-        $userFound = $user->findBy('email', $email);
-        if(!$userFound){
+        $user = new UserModel();
+        $result = $user->findBy('email', $email);
+
+        if($result['status'] || !$result['data']){
             return false;
         }
 
-        if(password_verify($password,$userFound->password)){
+        if(password_verify($password,$result['data']->password)){
             $_SESSION['user_logged_data'] = [
-                'username' => $userFound->username,
-                'email' => $userFound->email
+                'username' => $result['data']->username,
+                'id_user' => $result['data']->id,
+                'email' => $result['data']->email,
+                'roletype' => $result['data']->roletype
             ];
             $_SESSION['is_logged_in'] = true;
             return true;

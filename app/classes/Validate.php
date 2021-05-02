@@ -18,8 +18,8 @@ class Validate
     }
 
     public function exist($model, $field, $value){
-        $data = $model->findBy($field, $value);
-        if($data){
+        $result = $model->findBy($field, $value);
+        if(!$result['status'] && $result['data']){
             $this->error[$field] = 'Email già utilizzata';
         }
         return $this;

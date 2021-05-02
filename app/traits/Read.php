@@ -2,36 +2,34 @@
 
 
 namespace app\traits;
-
-
-use PDOException;
+use Exception;
 
 trait Read
 {
     public function find($fetchAll = true){
+        $result = ['data' => null, 'status' => 0, 'message' => ''];
         try {
-
             $query = $this->conn->query("SELECT * FROM {$this->table}");
-            return $fetchAll ? $query->fetchAll() : $query->fetch();
-
-        }catch (PDOException $e){
-            var_dump($e->getMessage());
+            $result['data'] = $fetchAll ? $query->fetchAll() : $query->fetch();
+        }catch (Exception $e){
+            $result['status'] = 1;
+            $result['message'] = $e->getMessage();
         }
+        return $result;
     }
 
     public function findBy($field, $value,$fetchAll = false ){
+        $result = ['data' => null, 'status' => 0, 'message' => ''];
         try {
-
             $prepare = $this->conn->prepare("SELECT * FROM {$this->table} WHERE {$field} = :{$field} ");
             $prepare->bindValue(":{$field}", $value);
             $prepare->execute();
-
-            return $fetchAll ? $prepare->fetchAll() : $prepare->fetch();
-
-        }catch (PDOException $e){
-            var_dump($e->getMessage());
-            die();
+            $result['data'] = $fetchAll ? $prepare->fetchAll() : $prepare->fetch();
+        }catch (Exception $e){
+            $result['status'] = 1;
+            $result['message'] = $e->getMessage();
         }
+        return $result;
     }
 
 }

@@ -37,5 +37,4 @@ class Flash
             return $messages['messages'] ?? [];
         }
     }
-
 }

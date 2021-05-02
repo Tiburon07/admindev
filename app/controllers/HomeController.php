@@ -4,27 +4,34 @@ namespace app\controllers;
 
 use app\classes\Flash;
 use app\classes\Validate;
-use app\database\modules\User;
+use app\modules\UserModel;
+use Firebase\JWT\JWT;
+use Psr\Log\LoggerInterface;
 
-class Home extends Base
+class HomeController extends BaseController
 {
     private $user;
     private $validate;
+    private $token;
 
-    public function __construct() {
-        $this->user = new User();
+    public function __construct(LoggerInterface $logger) {
+        parent::__construct($logger);
+        $config = parse_ini_file(__DIR__ . '/../config.ini', true);
+        $this->token = JWT::encode([],$config['jwt']['token'],"HS256");
+        $this->user = new UserModel();
         $this->validate = new Validate();
     }
 
     public function index($request, $response){
-
+        $this->logger->info('ciaone');
         $users = $this->user->find();
         $message = Flash::get('message');
 
         return $this->getTwig()->render($response, $this->setView('site/home'), [
             'title' => 'Home',
             'users' => $users,
-            'message' =>  $message
+            'message' =>  $message,
+            'token' => $this->token
         ]);
     }
 

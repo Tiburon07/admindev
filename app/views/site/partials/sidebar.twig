@@ -21,16 +21,16 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item {% if menu == 'coni' %} menu-is-opening menu-open {% endif %}">
+                    <a href="#" class="nav-link {% if menu == 'coni' %}active{% endif %}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>Supporto Coni <i class="fas fa-angle-left right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/coni/ticket" class="nav-link">
+                            <a href="/coni/attivita" class="nav-link {% if submenu == 'attivita' %}active{% endif %} ">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Ticket</p>
+                                <p>Attività</p>
                             </a>
                         </li>
                     </ul>
