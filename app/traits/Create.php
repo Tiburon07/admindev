@@ -14,6 +14,7 @@ trait Create
                 implode(',', array_keys($createFieldsAndVAlues)),
                 ':'.implode(',:', array_keys($createFieldsAndVAlues)));
             $stmt = $this->conn->prepare($sql);
+
             $result['data'] = $stmt->execute($createFieldsAndVAlues);
         }catch (Exception $e){
             $result['status'] = 1;

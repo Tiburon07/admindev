@@ -3,7 +3,8 @@
 
 namespace app\controllers;
 
-use app\classes\Flash;
+use app\classes\Error;
+use app\classes\Payload;
 use app\classes\Validate;
 use app\modules\AttivitaModel;
 use app\modules\UserModel;
@@ -15,6 +16,7 @@ class ConiController extends BaseController
     private $user;
     private $validate;
     private $token;
+    private $attivita;
 
     public function __construct(LoggerInterface $logger)
     {
@@ -33,5 +35,47 @@ class ConiController extends BaseController
             'submenu' => 'attivita',
             'token' => $this->token
         ]);
+    }
+
+    public function getFsn($request, $response){
+        $payload = new Payload();
+        $federazioni = $this->attivita->getFsn();
+        $payload->setData($federazioni['data']);
+
+        if($federazioni['status']){
+            $payload->setStatusCode(500);
+            $payload->setError(new Error(Error::SERVER_ERROR,$federazioni['message']));
+        }
+
+        $response->getBody()->write(json_encode($payload, JSON_PRETTY_PRINT));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function createAttivita($request, $response){
+        $payload = new Payload();
+        $body = json_decode($request->getBody(),true);
+
+        $created = $this->attivita->create($body);
+        if($created['status']){
+            $payload->setStatusCode(500);
+            $payload->setError(new Error(Error::SERVER_ERROR,$created['message']));
+        }
+
+        $response->getBody()->write(json_encode($payload, JSON_PRETTY_PRINT));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function getAttivita($request, $response, $args){
+        $payload = new Payload();
+        $attivita = $this->attivita->find();
+        $payload->setData($attivita['data']);
+
+        if($attivita['status']){
+            $payload->setStatusCode(500);
+            $payload->setError(new Error(Error::SERVER_ERROR,$attivita['message']));
+        }
+
+        $response->getBody()->write(json_encode($payload, JSON_PRETTY_PRINT));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }

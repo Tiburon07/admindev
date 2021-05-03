@@ -30,7 +30,16 @@ return function (App $app) {
         $group->post('/store', UserController::class.":createUser");
     });
 
-    $app->get('/api/getUsers', UserController::class.":getUsers")->add(new LoggedMiddleware());
+    $app->group('/api', function (Group $group){
+        //GET
+        $group->get('/getUsers', UserController::class.":getUsers")->add(new LoggedMiddleware());
+        $group->get('/getFsn', ConiController::class.":getFsn")->add(new LoggedMiddleware());
+        $group->get('/getAttivita', ConiController::class.":getAttivita")->add(new LoggedMiddleware());
+
+        //POST
+        $group->post('/createAttivita', ConiController::class.":createAttivita")->add(new LoggedMiddleware());
+    });
+
     $app->get('/coni/attivita', ConiController::class.":getAttivitaView")->add(new LoggedMiddleware());
 
     //Rotta 404
